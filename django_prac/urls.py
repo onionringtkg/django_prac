@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from posts import views
 
 #写真の表示に必要
@@ -26,7 +26,8 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', include('posts.urls')),
-    path('posts/(?P<post_id>[0-9]+)/$', views.post_detail)
+    re_path('posts/(?P<post_id>[0-9]+)/$', views.post_detail, name="post_detail")
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)　→　メディア（写真）の表示で使用
