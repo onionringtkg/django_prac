@@ -14,8 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from posts import views
+
+#写真の表示に必要
+from django.conf.urls.static import static
+from django.conf import settings
+
+##PJ全体でのルーティング設定
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('posts/', include('posts.urls')),
+    path('posts/(?P<post_id>[0-9]+)/$', views.post_detail)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)　→　メディア（写真）の表示で使用
+# settings.pyの修正も合わせて必要
